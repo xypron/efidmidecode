@@ -57,25 +57,25 @@ static const u8 opt_type_connector[] = { 8, 255 };
 static const u8 opt_type_slot[] = { 9, 255 };
 
 static const struct type_keyword opt_type_keyword[] = {
-	{ "bios", opt_type_bios },
-	{ "system", opt_type_system },
-	{ "baseboard", opt_type_baseboard },
-	{ "chassis", opt_type_chassis },
-	{ "processor", opt_type_processor },
-	{ "memory", opt_type_memory },
-	{ "cache", opt_type_cache },
-	{ "connector", opt_type_connector },
-	{ "slot", opt_type_slot },
+	{ u"bios", opt_type_bios },
+	{ u"system", opt_type_system },
+	{ u"baseboard", opt_type_baseboard },
+	{ u"chassis", opt_type_chassis },
+	{ u"processor", opt_type_processor },
+	{ u"memory", opt_type_memory },
+	{ u"cache", opt_type_cache },
+	{ u"connector", opt_type_connector },
+	{ u"slot", opt_type_slot },
 };
 
 static void print_opt_type_list(void)
 {
 	unsigned int i;
 
-	fprintf(stderr, "Valid type keywords are:\n");
+	fprintf(stderr, u"Valid type keywords are:\n");
 	for (i = 0; i < ARRAY_SIZE(opt_type_keyword); i++)
 	{
-		fprintf(stderr, "  %s\n", opt_type_keyword[i].keyword);
+		fprintf(stderr, u"  %s\n", opt_type_keyword[i].keyword);
 	}
 }
 
@@ -89,7 +89,7 @@ static u8 *parse_opt_type(u8 *p, const char *arg)
 		p = (u8 *)calloc(256, sizeof(u8));
 		if (p == NULL)
 		{
-			perror("calloc");
+			perror(u"calloc");
 			return NULL;
 		}
 	}
@@ -115,13 +115,13 @@ static u8 *parse_opt_type(u8 *p, const char *arg)
 		val = strtoul(arg, &next, 0);
 		if (next == arg || (*next != '\0' && *next != ',' && *next != ' '))
 		{
-			fprintf(stderr, "Invalid type keyword: %s\n", arg);
+			fprintf(stderr, u"Invalid type keyword: %s\n", arg);
 			print_opt_type_list();
 			goto exit_free;
 		}
 		if (val > 0xff)
 		{
-			fprintf(stderr, "Invalid type number: %lu\n", val);
+			fprintf(stderr, u"Invalid type number: %lu\n", val);
 			goto exit_free;
 		}
 
@@ -148,32 +148,32 @@ exit_free:
    Due to the low count of items in there at the moment, it did not seem
    worth the additional code complexity though. */
 static const struct string_keyword opt_string_keyword[] = {
-	{ "bios-vendor", 0, 0x04 },
-	{ "bios-version", 0, 0x05 },
-	{ "bios-release-date", 0, 0x08 },
-	{ "bios-revision", 0, 0x15 },		/* 0x14 and 0x15 */
-	{ "firmware-revision", 0, 0x17 },	/* 0x16 and 0x17 */
-	{ "system-manufacturer", 1, 0x04 },
-	{ "system-product-name", 1, 0x05 },
-	{ "system-version", 1, 0x06 },
-	{ "system-serial-number", 1, 0x07 },
-	{ "system-uuid", 1, 0x08 },             /* dmi_system_uuid() */
-	{ "system-sku-number", 1, 0x19 },
-	{ "system-family", 1, 0x1a },
-	{ "baseboard-manufacturer", 2, 0x04 },
-	{ "baseboard-product-name", 2, 0x05 },
-	{ "baseboard-version", 2, 0x06 },
-	{ "baseboard-serial-number", 2, 0x07 },
-	{ "baseboard-asset-tag", 2, 0x08 },
-	{ "chassis-manufacturer", 3, 0x04 },
-	{ "chassis-type", 3, 0x05 },            /* dmi_chassis_type() */
-	{ "chassis-version", 3, 0x06 },
-	{ "chassis-serial-number", 3, 0x07 },
-	{ "chassis-asset-tag", 3, 0x08 },
-	{ "processor-family", 4, 0x06 },        /* dmi_processor_family() */
-	{ "processor-manufacturer", 4, 0x07 },
-	{ "processor-version", 4, 0x10 },
-	{ "processor-frequency", 4, 0x16 },     /* dmi_processor_frequency() */
+	{ u"bios-vendor", 0, 0x04 },
+	{ u"bios-version", 0, 0x05 },
+	{ u"bios-release-date", 0, 0x08 },
+	{ u"bios-revision", 0, 0x15 },		/* 0x14 and 0x15 */
+	{ u"firmware-revision", 0, 0x17 },	/* 0x16 and 0x17 */
+	{ u"system-manufacturer", 1, 0x04 },
+	{ u"system-product-name", 1, 0x05 },
+	{ u"system-version", 1, 0x06 },
+	{ u"system-serial-number", 1, 0x07 },
+	{ u"system-uuid", 1, 0x08 },             /* dmi_system_uuid() */
+	{ u"system-sku-number", 1, 0x19 },
+	{ u"system-family", 1, 0x1a },
+	{ u"baseboard-manufacturer", 2, 0x04 },
+	{ u"baseboard-product-name", 2, 0x05 },
+	{ u"baseboard-version", 2, 0x06 },
+	{ u"baseboard-serial-number", 2, 0x07 },
+	{ u"baseboard-asset-tag", 2, 0x08 },
+	{ u"chassis-manufacturer", 3, 0x04 },
+	{ u"chassis-type", 3, 0x05 },            /* dmi_chassis_type() */
+	{ u"chassis-version", 3, 0x06 },
+	{ u"chassis-serial-number", 3, 0x07 },
+	{ u"chassis-asset-tag", 3, 0x08 },
+	{ u"processor-family", 4, 0x06 },        /* dmi_processor_family() */
+	{ u"processor-manufacturer", 4, 0x07 },
+	{ u"processor-version", 4, 0x10 },
+	{ u"processor-frequency", 4, 0x16 },     /* dmi_processor_frequency() */
 };
 
 /* This is a template, 3rd field is set at runtime. */
@@ -184,10 +184,10 @@ static void print_opt_string_list(void)
 {
 	unsigned int i;
 
-	fprintf(stderr, "Valid string keywords are:\n");
+	fprintf(stderr, u"Valid string keywords are:\n");
 	for (i = 0; i < ARRAY_SIZE(opt_string_keyword); i++)
 	{
-		fprintf(stderr, "  %s\n", opt_string_keyword[i].keyword);
+		fprintf(stderr, u"  %s\n", opt_string_keyword[i].keyword);
 	}
 }
 
@@ -197,7 +197,7 @@ static int parse_opt_string(const char *arg)
 
 	if (opt.string)
 	{
-		fprintf(stderr, "Only one string can be specified\n");
+		fprintf(stderr, u"Only one string can be specified\n");
 		return -1;
 	}
 
@@ -210,7 +210,7 @@ static int parse_opt_string(const char *arg)
 		}
 	}
 
-	fprintf(stderr, "Invalid string keyword: %s\n", arg);
+	fprintf(stderr, u"Invalid string keyword: %s\n", arg);
 	print_opt_string_list();
 	return -1;
 }
@@ -222,18 +222,18 @@ static int parse_opt_oem_string(const char *arg)
 
 	if (opt.string)
 	{
-		fprintf(stderr, "Only one string can be specified\n");
+		fprintf(stderr, u"Only one string can be specified\n");
 		return -1;
 	}
 
 	/* Return the number of OEM strings */
-	if (strcmp(arg, "count") == 0)
+	if (strcmp(arg, u"count") == 0)
 		goto done;
 
 	val = strtoul(arg, &next, 10);
 	if (next == arg  || *next != '\0' || val == 0x00 || val > 0xff)
 	{
-		fprintf(stderr, "Invalid OEM string number: %s\n", arg);
+		fprintf(stderr, u"Invalid OEM string number: %s\n", arg);
 		return -1;
 	}
 
@@ -251,7 +251,7 @@ static u32 parse_opt_handle(const char *arg)
 	val = strtoul(arg, &next, 0);
 	if (next == arg || *next != '\0' || val > 0xffff)
 	{
-		fprintf(stderr, "Invalid handle number: %s\n", arg);
+		fprintf(stderr, u"Invalid handle number: %s\n", arg);
 		return ~0;
 	}
 	return val;
@@ -265,20 +265,20 @@ static u32 parse_opt_handle(const char *arg)
 int parse_command_line(int argc, char * const argv[])
 {
 	int option;
-	const char *optstring = "d:hqs:t:uH:V";
+	const char *optstring = u"d:hqs:t:uH:V";
 	struct option longopts[] = {
-		{ "dev-mem", required_argument, NULL, 'd' },
-		{ "help", no_argument, NULL, 'h' },
-		{ "quiet", no_argument, NULL, 'q' },
-		{ "string", required_argument, NULL, 's' },
-		{ "type", required_argument, NULL, 't' },
-		{ "dump", no_argument, NULL, 'u' },
-		{ "dump-bin", required_argument, NULL, 'B' },
-		{ "from-dump", required_argument, NULL, 'F' },
-		{ "handle", required_argument, NULL, 'H' },
-		{ "oem-string", required_argument, NULL, 'O' },
-		{ "no-sysfs", no_argument, NULL, 'S' },
-		{ "version", no_argument, NULL, 'V' },
+		{ u"dev-mem", required_argument, NULL, 'd' },
+		{ u"help", no_argument, NULL, 'h' },
+		{ u"quiet", no_argument, NULL, 'q' },
+		{ u"string", required_argument, NULL, 's' },
+		{ u"type", required_argument, NULL, 't' },
+		{ u"dump", no_argument, NULL, 'u' },
+		{ u"dump-bin", required_argument, NULL, 'B' },
+		{ u"from-dump", required_argument, NULL, 'F' },
+		{ u"handle", required_argument, NULL, 'H' },
+		{ u"oem-string", required_argument, NULL, 'O' },
+		{ u"no-sysfs", no_argument, NULL, 'S' },
+		{ u"version", no_argument, NULL, 'V' },
 		{ NULL, 0, NULL, 0 }
 	};
 
@@ -335,11 +335,11 @@ int parse_command_line(int argc, char * const argv[])
 				switch (optopt)
 				{
 					case 's':
-						fprintf(stderr, "String keyword expected\n");
+						fprintf(stderr, u"String keyword expected\n");
 						print_opt_string_list();
 						break;
 					case 't':
-						fprintf(stderr, "Type number or keyword expected\n");
+						fprintf(stderr, u"Type number or keyword expected\n");
 						print_opt_type_list();
 						break;
 				}
@@ -350,13 +350,13 @@ int parse_command_line(int argc, char * const argv[])
 	if ((opt.string != NULL) + (opt.type != NULL)
 	  + !!(opt.flags & FLAG_DUMP_BIN) + (opt.handle != ~0U) > 1)
 	{
-		fprintf(stderr, "Options --string, --type, --handle and --dump-bin are mutually exclusive\n");
+		fprintf(stderr, u"Options --string, --type, --handle and --dump-bin are mutually exclusive\n");
 		return -1;
 	}
 
 	if ((opt.flags & FLAG_FROM_DUMP) && (opt.flags & FLAG_DUMP_BIN))
 	{
-		fprintf(stderr, "Options --from-dump and --dump-bin are mutually exclusive\n");
+		fprintf(stderr, u"Options --from-dump and --dump-bin are mutually exclusive\n");
 		return -1;
 	}
 
@@ -366,20 +366,20 @@ int parse_command_line(int argc, char * const argv[])
 void print_help(void)
 {
 	static const char *help =
-		"Usage: dmidecode [OPTIONS]\n"
-		"Options are:\n"
-		" -d, --dev-mem FILE     Read memory from device FILE (default: " DEFAULT_MEM_DEV ")\n"
-		" -h, --help             Display this help text and exit\n"
-		" -q, --quiet            Less verbose output\n"
-		" -s, --string KEYWORD   Only display the value of the given DMI string\n"
-		" -t, --type TYPE        Only display the entries of given type\n"
-		" -H, --handle HANDLE    Only display the entry of given handle\n"
-		" -u, --dump             Do not decode the entries\n"
-		"     --dump-bin FILE    Dump the DMI data to a binary file\n"
-		"     --from-dump FILE   Read the DMI data from a binary file\n"
-		"     --no-sysfs         Do not attempt to read DMI data from sysfs files\n"
-		"     --oem-string N     Only display the value of the given OEM string\n"
-		" -V, --version          Display the version and exit\n";
+		u"Usage: dmidecode [OPTIONS]\n"
+		u"Options are:\n"
+		u" -d, --dev-mem FILE     Read memory from device FILE (default: " DEFAULT_MEM_DEV u")\n"
+		u" -h, --help             Display this help text and exit\n"
+		u" -q, --quiet            Less verbose output\n"
+		u" -s, --string KEYWORD   Only display the value of the given DMI string\n"
+		u" -t, --type TYPE        Only display the entries of given type\n"
+		u" -H, --handle HANDLE    Only display the entry of given handle\n"
+		u" -u, --dump             Do not decode the entries\n"
+		u"     --dump-bin FILE    Dump the DMI data to a binary file\n"
+		u"     --from-dump FILE   Read the DMI data from a binary file\n"
+		u"     --no-sysfs         Do not attempt to read DMI data from sysfs files\n"
+		u"     --oem-string N     Only display the value of the given OEM string\n"
+		u" -V, --version          Display the version and exit\n";
 
-	printf("%s", help);
+	printf(u"%s", help);
 }

@@ -27,11 +27,11 @@ void pr_comment(const char *format, ...)
 {
 	va_list args;
 
-	printf("# ");
+	printf(u"# ");
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_info(const char *format, ...)
@@ -41,12 +41,12 @@ void pr_info(const char *format, ...)
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_handle(const struct dmi_header *h)
 {
-	printf("Handle 0x%04X, DMI type %d, %d bytes\n",
+	printf(u"Handle 0x%04X, DMI type %d, %d bytes\n",
 	       h->handle, h->type, h->length);
 }
 
@@ -57,48 +57,48 @@ void pr_handle_name(const char *format, ...)
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_attr(const char *name, const char *format, ...)
 {
 	va_list args;
 
-	printf("\t%s: ", name);
+	printf(u"\t%s: ", name);
 
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_subattr(const char *name, const char *format, ...)
 {
 	va_list args;
 
-	printf("\t\t%s: ", name);
+	printf(u"\t\t%s: ", name);
 
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_list_start(const char *name, const char *format, ...)
 {
 	va_list args;
 
-	printf("\t%s:", name);
+	printf(u"\t%s:", name);
 
 	/* format is optional, skip value if not provided */
 	if (format)
 	{
-		printf(" ");
+		printf(u" ");
 		va_start(args, format);
 		vprintf(format, args);
 		va_end(args);
 	}
-	printf("\n");
+	printf(u"\n");
 
 }
 
@@ -106,12 +106,12 @@ void pr_list_item(const char *format, ...)
 {
 	va_list args;
 
-	printf("\t\t");
+	printf(u"\t\t");
 
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_list_end(void)
@@ -121,17 +121,17 @@ void pr_list_end(void)
 
 void pr_sep(void)
 {
-	printf("\n");
+	printf(u"\n");
 }
 
 void pr_struct_err(const char *format, ...)
 {
 	va_list args;
 
-	printf("\t");
+	printf(u"\t");
 
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);
-	printf("\n");
+	printf(u"\n");
 }

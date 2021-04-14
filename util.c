@@ -1,5 +1,5 @@
 /*
- * Common "util" functions
+ * Common u"util" functions
  * This file is part of the dmidecode project.
  *
  *   Copyright (C) 2002-2018 Jean Delvare <jdelvare@suse.de>
@@ -18,7 +18,7 @@
  *   along with this program; if not, write to the Free Software
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
- *   For the avoidance of doubt the "preferred form" of this code is one which
+ *   For the avoidance of doubt the u"preferred form" of this code is one which
  *   is in an open unpatent encumbered format. Where cryptographic key signing
  *   forms part of the process of creating an executable the information
  *   including keys needed to generate an equivalently functional executable
@@ -69,7 +69,7 @@ static int myread(int fd, u8 *buf, size_t count, const char *prefix)
 
 	if (r2 != count)
 	{
-		fprintf(stderr, "%s: Unexpected end of file\n", prefix);
+		fprintf(stderr, u"%s: Unexpected end of file\n", prefix);
 		return -1;
 	}
 
@@ -119,7 +119,7 @@ void *read_file(off_t base, size_t *max_len, const char *filename)
 	{
 		if (base >= statbuf.st_size)
 		{
-			fprintf(stderr, "%s: Can't read data beyond EOF\n",
+			fprintf(stderr, u"%s: Can't read data beyond EOF\n",
 				filename);
 			p = NULL;
 			goto out;
@@ -130,14 +130,14 @@ void *read_file(off_t base, size_t *max_len, const char *filename)
 
 	if ((p = malloc(*max_len)) == NULL)
 	{
-		perror("malloc");
+		perror(u"malloc");
 		goto out;
 	}
 
 	if (lseek(fd, base, SEEK_SET) == -1)
 	{
-		fprintf(stderr, "%s: ", filename);
-		perror("lseek");
+		fprintf(stderr, u"%s: ", filename);
+		perror(u"lseek");
 		goto err_free;
 	}
 
@@ -189,15 +189,15 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 
 	if ((p = malloc(len)) == NULL)
 	{
-		perror("malloc");
+		perror(u"malloc");
 		goto out;
 	}
 
 #ifdef USE_MMAP
 	if (fstat(fd, &statbuf) == -1)
 	{
-		fprintf(stderr, "%s: ", devmem);
-		perror("stat");
+		fprintf(stderr, u"%s: ", devmem);
+		perror(u"stat");
 		goto err_free;
 	}
 
@@ -207,7 +207,7 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 	 */
 	if (S_ISREG(statbuf.st_mode) && base + (off_t)len > statbuf.st_size)
 	{
-		fprintf(stderr, "mmap: Can't map beyond end of file %s\n",
+		fprintf(stderr, u"mmap: Can't map beyond end of file %s\n",
 			devmem);
 		goto err_free;
 	}
@@ -230,8 +230,8 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 
 	if (munmap(mmp, mmoffset + len) == -1)
 	{
-		fprintf(stderr, "%s: ", devmem);
-		perror("munmap");
+		fprintf(stderr, u"%s: ", devmem);
+		perror(u"munmap");
 	}
 
 	goto out;
@@ -240,8 +240,8 @@ try_read:
 #endif /* USE_MMAP */
 	if (lseek(fd, base, SEEK_SET) == -1)
 	{
-		fprintf(stderr, "%s: ", devmem);
-		perror("lseek");
+		fprintf(stderr, u"%s: ", devmem);
+		perror(u"lseek");
 		goto err_free;
 	}
 
@@ -263,32 +263,32 @@ int write_dump(size_t base, size_t len, const void *data, const char *dumpfile, 
 {
 	FILE *f;
 
-	f = fopen(dumpfile, add ? "r+b" : "wb");
+	f = fopen(dumpfile, add ? u"r+b" : u"wb");
 	if (!f)
 	{
-		fprintf(stderr, "%s: ", dumpfile);
-		perror("fopen");
+		fprintf(stderr, u"%s: ", dumpfile);
+		perror(u"fopen");
 		return -1;
 	}
 
 	if (fseek(f, base, SEEK_SET) != 0)
 	{
-		fprintf(stderr, "%s: ", dumpfile);
-		perror("fseek");
+		fprintf(stderr, u"%s: ", dumpfile);
+		perror(u"fseek");
 		goto err_close;
 	}
 
 	if (fwrite(data, len, 1, f) != 1)
 	{
-		fprintf(stderr, "%s: ", dumpfile);
-		perror("fwrite");
+		fprintf(stderr, u"%s: ", dumpfile);
+		perror(u"fwrite");
 		goto err_close;
 	}
 
 	if (fclose(f))
 	{
-		fprintf(stderr, "%s: ", dumpfile);
-		perror("fclose");
+		fprintf(stderr, u"%s: ", dumpfile);
+		perror(u"fclose");
 		return -1;
 	}
 
