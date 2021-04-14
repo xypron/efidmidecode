@@ -3350,8 +3350,7 @@ static void dmi_fixup_type_34(struct dmi_header *h, int display)
 	 && is_printable(p + 0x0B, 0x10 - 0x0B))
 	{
 		if (!(opt.flags & FLAG_QUIET) && display)
-			fprintf(stderr,
-				u"Invalid entry length (%u). Fixed up to %u.\n",
+			printf(u"Invalid entry length (%u). Fixed up to %u.\n",
 				0x10, 0x0B);
 		h->length = 0x0B;
 	}
@@ -3951,8 +3950,7 @@ static void dmi_parse_controller_structure(const struct dmi_header *h)
 	total_read++;
 	if (total_read > h->length)
 	{
-		fprintf(stderr,
-			u"Total read length %d exceeds total structure length %d (handle 0x%04hx)\n",
+		printf(u"Total read length %d exceeds total structure length %d (handle 0x%04hx)\n",
 			total_read, h->length, h->handle);
 		return;
 	}
@@ -3973,8 +3971,7 @@ static void dmi_parse_controller_structure(const struct dmi_header *h)
 			total_read += rec[1] + 2;
 			if (total_read > h->length)
 			{
-				fprintf(stderr,
-					u"Total read length %d exceeds total structure length %d (handle 0x%04hx, record %d)\n",
+				printf(u"Total read length %d exceeds total structure length %d (handle 0x%04hx, record %d)\n",
 					total_read, h->length, h->handle, i + 1);
 				return;
 			}
@@ -5128,7 +5125,7 @@ static void dmi_table_string(const struct dmi_header *h, const u8 *data, u16 ver
 	{
 		if (h->length < 5 || offset > data[4])
 		{
-			fprintf(stderr, u"No OEM string number %u\n", offset);
+			printf(u"No OEM string number %u\n", offset);
 			return;
 		}
 
@@ -5251,8 +5248,7 @@ static void dmi_table_decode(u8 *buf, u32 len, u16 num, u16 ver, u32 flags)
 		{
 			if (!(opt.flags & FLAG_QUIET))
 			{
-				fprintf(stderr,
-					u"Invalid entry length (%u). DMI table "
+				printf(u"Invalid entry length (%u). DMI table "
 					u"is broken! Stop.\n\n",
 					(unsigned int)h.length);
 				opt.flags |= FLAG_QUIET;
@@ -5318,11 +5314,11 @@ static void dmi_table_decode(u8 *buf, u32 len, u16 num, u16 ver, u32 flags)
 	if (!(opt.flags & FLAG_QUIET))
 	{
 		if (num && i != num)
-			fprintf(stderr, u"Wrong DMI structures count: %d announced, "
+			printf(u"Wrong DMI structures count: %d announced, "
 				u"only %d decoded.\n", num, i);
 		if ((unsigned long)(data - buf) > len
 		 || (num && (unsigned long)(data - buf) < len))
-			fprintf(stderr, u"Wrong DMI structures length: %u bytes "
+			printf(u"Wrong DMI structures length: %u bytes "
 				u"announced, structures occupy %lu bytes.\n",
 				len, (unsigned long)(data - buf));
 	}
@@ -5371,7 +5367,7 @@ static void dmi_table(off_t base, u32 len, u16 num, u32 ver, const char *devmem,
 			&size, devmem);
 		if (!(opt.flags & FLAG_QUIET) && num && size != (size_t)len)
 		{
-			fprintf(stderr, u"Wrong DMI structures length: %u bytes "
+			printf(u"Wrong DMI structures length: %u bytes "
 				u"announced, only %lu bytes available.\n",
 				len, (unsigned long)size);
 		}
@@ -5382,11 +5378,10 @@ static void dmi_table(off_t base, u32 len, u16 num, u32 ver, const char *devmem,
 
 	if (buf == NULL)
 	{
-		fprintf(stderr, u"Failed to read table, sorry.\n");
+		printf(u"Failed to read table, sorry.\n");
 #ifndef USE_MMAP
 		if (!(flags & FLAG_NO_FILE_OFFSET))
-			fprintf(stderr,
-				u"Try compiling dmidecode with -DUSE_MMAP.\n");
+			printf(u"Try compiling dmidecode with -DUSE_MMAP.\n");
 #endif
 		return;
 	}
@@ -5437,8 +5432,7 @@ static int smbios3_decode(u8 *buf, const char *devmem, u32 flags)
 	/* Don't let checksum run beyond the buffer */
 	if (buf[0x06] > 0x20)
 	{
-		fprintf(stderr,
-			u"Entry point length too large (%u bytes, expected %u).\n",
+		printf(u"Entry point length too large (%u bytes, expected %u).\n",
 			(unsigned int)buf[0x06], 0x18U);
 		return 0;
 	}
@@ -5454,7 +5448,7 @@ static int smbios3_decode(u8 *buf, const char *devmem, u32 flags)
 	offset = QWORD(buf + 0x10);
 	if (!(flags & FLAG_NO_FILE_OFFSET) && offset.h && sizeof(off_t) < 8)
 	{
-		fprintf(stderr, u"64-bit addresses not supported, sorry.\n");
+		printf(u"64-bit addresses not supported, sorry.\n");
 		return 0;
 	}
 
@@ -5484,8 +5478,7 @@ static int smbios_decode(u8 *buf, const char *devmem, u32 flags)
 	/* Don't let checksum run beyond the buffer */
 	if (buf[0x05] > 0x20)
 	{
-		fprintf(stderr,
-			u"Entry point length too large (%u bytes, expected %u).\n",
+		printf(u"Entry point length too large (%u bytes, expected %u).\n",
 			(unsigned int)buf[0x05], 0x1FU);
 		return 0;
 	}
@@ -5502,15 +5495,13 @@ static int smbios_decode(u8 *buf, const char *devmem, u32 flags)
 		case 0x021F:
 		case 0x0221:
 			if (!(opt.flags & FLAG_QUIET))
-				fprintf(stderr,
-					u"SMBIOS version fixup (2.%d -> 2.%d).\n",
+				printf(u"SMBIOS version fixup (2.%d -> 2.%d).\n",
 					ver & 0xFF, 3);
 			ver = 0x0203;
 			break;
 		case 0x0233:
 			if (!(opt.flags & FLAG_QUIET))
-				fprintf(stderr,
-					u"SMBIOS version fixup (2.%d -> 2.%d).\n",
+				printf(u"SMBIOS version fixup (2.%d -> 2.%d).\n",
 					51, 6);
 			ver = 0x0206;
 			break;
@@ -5615,7 +5606,7 @@ static int address_from_efi(off_t *address)
 		perror(filename);
 
 	if (ret == EFI_NO_SMBIOS)
-		fprintf(stderr, u"%s: SMBIOS entry point missing\n", filename);
+		printf(u"%s: SMBIOS entry point missing\n", filename);
 #elif defined(__FreeBSD__)
 	/*
 	 * On FreeBSD, SMBIOS anchor base address in UEFI mode is exposed
@@ -5652,19 +5643,6 @@ int main(int argc, char * const argv[])
 	size_t size;
 	int efi;
 	u8 *buf = NULL;
-
-	/*
-	 * We don't want stdout and stderr to be mixed up if both are
-	 * redirected to the same file.
-	 */
-	setlinebuf(stdout);
-	setlinebuf(stderr);
-
-	if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4 || '\0' != 0)
-	{
-		fprintf(stderr, u"%s: compiler incompatibility\n", argv[0]);
-		exit(255);
-	}
 
 	/* Set default option values */
 	opt.devmem = DEFAULT_MEM_DEV;

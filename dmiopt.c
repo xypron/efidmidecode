@@ -72,10 +72,10 @@ static void print_opt_type_list(void)
 {
 	unsigned int i;
 
-	fprintf(stderr, u"Valid type keywords are:\n");
+	printf(u"Valid type keywords are:\n");
 	for (i = 0; i < ARRAY_SIZE(opt_type_keyword); i++)
 	{
-		fprintf(stderr, u"  %s\n", opt_type_keyword[i].keyword);
+		printf(u"  %s\n", opt_type_keyword[i].keyword);
 	}
 }
 
@@ -115,13 +115,13 @@ static u8 *parse_opt_type(u8 *p, const char *arg)
 		val = strtoul(arg, &next, 0);
 		if (next == arg || (*next != '\0' && *next != ',' && *next != ' '))
 		{
-			fprintf(stderr, u"Invalid type keyword: %s\n", arg);
+			printf(u"Invalid type keyword: %s\n", arg);
 			print_opt_type_list();
 			goto exit_free;
 		}
 		if (val > 0xff)
 		{
-			fprintf(stderr, u"Invalid type number: %lu\n", val);
+			printf(u"Invalid type number: %lu\n", val);
 			goto exit_free;
 		}
 
@@ -184,10 +184,10 @@ static void print_opt_string_list(void)
 {
 	unsigned int i;
 
-	fprintf(stderr, u"Valid string keywords are:\n");
+	printf(u"Valid string keywords are:\n");
 	for (i = 0; i < ARRAY_SIZE(opt_string_keyword); i++)
 	{
-		fprintf(stderr, u"  %s\n", opt_string_keyword[i].keyword);
+		printf(u"  %s\n", opt_string_keyword[i].keyword);
 	}
 }
 
@@ -197,7 +197,7 @@ static int parse_opt_string(const char *arg)
 
 	if (opt.string)
 	{
-		fprintf(stderr, u"Only one string can be specified\n");
+		printf(u"Only one string can be specified\n");
 		return -1;
 	}
 
@@ -210,7 +210,7 @@ static int parse_opt_string(const char *arg)
 		}
 	}
 
-	fprintf(stderr, u"Invalid string keyword: %s\n", arg);
+	printf(u"Invalid string keyword: %s\n", arg);
 	print_opt_string_list();
 	return -1;
 }
@@ -222,7 +222,7 @@ static int parse_opt_oem_string(const char *arg)
 
 	if (opt.string)
 	{
-		fprintf(stderr, u"Only one string can be specified\n");
+		printf(u"Only one string can be specified\n");
 		return -1;
 	}
 
@@ -233,7 +233,7 @@ static int parse_opt_oem_string(const char *arg)
 	val = strtoul(arg, &next, 10);
 	if (next == arg  || *next != '\0' || val == 0x00 || val > 0xff)
 	{
-		fprintf(stderr, u"Invalid OEM string number: %s\n", arg);
+		printf(u"Invalid OEM string number: %s\n", arg);
 		return -1;
 	}
 
@@ -251,7 +251,7 @@ static u32 parse_opt_handle(const char *arg)
 	val = strtoul(arg, &next, 0);
 	if (next == arg || *next != '\0' || val > 0xffff)
 	{
-		fprintf(stderr, u"Invalid handle number: %s\n", arg);
+		printf(u"Invalid handle number: %s\n", arg);
 		return ~0;
 	}
 	return val;
@@ -335,11 +335,11 @@ int parse_command_line(int argc, char * const argv[])
 				switch (optopt)
 				{
 					case 's':
-						fprintf(stderr, u"String keyword expected\n");
+						printf(u"String keyword expected\n");
 						print_opt_string_list();
 						break;
 					case 't':
-						fprintf(stderr, u"Type number or keyword expected\n");
+						printf(u"Type number or keyword expected\n");
 						print_opt_type_list();
 						break;
 				}
@@ -350,13 +350,13 @@ int parse_command_line(int argc, char * const argv[])
 	if ((opt.string != NULL) + (opt.type != NULL)
 	  + !!(opt.flags & FLAG_DUMP_BIN) + (opt.handle != ~0U) > 1)
 	{
-		fprintf(stderr, u"Options --string, --type, --handle and --dump-bin are mutually exclusive\n");
+		printf(u"Options --string, --type, --handle and --dump-bin are mutually exclusive\n");
 		return -1;
 	}
 
 	if ((opt.flags & FLAG_FROM_DUMP) && (opt.flags & FLAG_DUMP_BIN))
 	{
-		fprintf(stderr, u"Options --from-dump and --dump-bin are mutually exclusive\n");
+		printf(u"Options --from-dump and --dump-bin are mutually exclusive\n");
 		return -1;
 	}
 

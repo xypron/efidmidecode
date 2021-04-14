@@ -69,7 +69,7 @@ static int myread(int fd, u8 *buf, size_t count, const char *prefix)
 
 	if (r2 != count)
 	{
-		fprintf(stderr, u"%s: Unexpected end of file\n", prefix);
+		printf(u"%s: Unexpected end of file\n", prefix);
 		return -1;
 	}
 
@@ -119,7 +119,7 @@ void *read_file(off_t base, size_t *max_len, const char *filename)
 	{
 		if (base >= statbuf.st_size)
 		{
-			fprintf(stderr, u"%s: Can't read data beyond EOF\n",
+			printf(u"%s: Can't read data beyond EOF\n",
 				filename);
 			p = NULL;
 			goto out;
@@ -136,7 +136,7 @@ void *read_file(off_t base, size_t *max_len, const char *filename)
 
 	if (lseek(fd, base, SEEK_SET) == -1)
 	{
-		fprintf(stderr, u"%s: ", filename);
+		printf(u"%s: ", filename);
 		perror(u"lseek");
 		goto err_free;
 	}
@@ -196,7 +196,7 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 #ifdef USE_MMAP
 	if (fstat(fd, &statbuf) == -1)
 	{
-		fprintf(stderr, u"%s: ", devmem);
+		printf(u"%s: ", devmem);
 		perror(u"stat");
 		goto err_free;
 	}
@@ -207,7 +207,7 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 	 */
 	if (S_ISREG(statbuf.st_mode) && base + (off_t)len > statbuf.st_size)
 	{
-		fprintf(stderr, u"mmap: Can't map beyond end of file %s\n",
+		printf(u"mmap: Can't map beyond end of file %s\n",
 			devmem);
 		goto err_free;
 	}
@@ -230,7 +230,7 @@ void *mem_chunk(off_t base, size_t len, const char *devmem)
 
 	if (munmap(mmp, mmoffset + len) == -1)
 	{
-		fprintf(stderr, u"%s: ", devmem);
+		printf(u"%s: ", devmem);
 		perror(u"munmap");
 	}
 
@@ -240,7 +240,7 @@ try_read:
 #endif /* USE_MMAP */
 	if (lseek(fd, base, SEEK_SET) == -1)
 	{
-		fprintf(stderr, u"%s: ", devmem);
+		printf(u"%s: ", devmem);
 		perror(u"lseek");
 		goto err_free;
 	}
@@ -266,28 +266,28 @@ int write_dump(size_t base, size_t len, const void *data, const char *dumpfile, 
 	f = fopen(dumpfile, add ? u"r+b" : u"wb");
 	if (!f)
 	{
-		fprintf(stderr, u"%s: ", dumpfile);
+		printf(u"%s: ", dumpfile);
 		perror(u"fopen");
 		return -1;
 	}
 
 	if (fseek(f, base, SEEK_SET) != 0)
 	{
-		fprintf(stderr, u"%s: ", dumpfile);
+		printf(u"%s: ", dumpfile);
 		perror(u"fseek");
 		goto err_close;
 	}
 
 	if (fwrite(data, len, 1, f) != 1)
 	{
-		fprintf(stderr, u"%s: ", dumpfile);
+		printf(u"%s: ", dumpfile);
 		perror(u"fwrite");
 		goto err_close;
 	}
 
 	if (fclose(f))
 	{
-		fprintf(stderr, u"%s: ", dumpfile);
+		printf(u"%s: ", dumpfile);
 		perror(u"fclose");
 		return -1;
 	}
